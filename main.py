@@ -27,7 +27,7 @@ def query_documents(query_text, embeddings_array,documents, top_k=3):
     results = []
     for idx in top_indices:
         results.append({
-            'text': documents[idx].text,
+            'text': documents[idx]['text'],
             'similarity': similarities[idx],
         })
     return results
@@ -52,5 +52,5 @@ class Query(BaseModel):
 async def rag_pipeline(query: Query):
     relevant_docs = query_documents(query.query,query.embeddings,query.document)
     context = "\n\n".join([doc['text'] for doc in relevant_docs])
-    answer = generate_answer(query.text, context)
-    return {"query": query.text, "answer": answer}
+    answer = generate_answer(query.query, context)
+    return {"query": query.query, "answer": answer}
